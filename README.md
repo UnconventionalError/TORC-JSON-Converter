@@ -1,132 +1,221 @@
-# TORC paths.json -> Jedipedia Converter
-=======================================
+# TORC `paths.json` → Jedipedia Converter
 
-WHAT THIS DOES
---------------
-Searches a folder (and every subfolder inside it) for files named
-"`paths.json`" in the old TORC format, converts each one to the newer
-Jedipedia format, and saves the results into one export folder.
+## What This Does
+
+Searches a folder (and every subfolder inside it) for files named `paths.json` in the old TORC format, converts each one to the newer Jedipedia format, and saves the results into one export folder.
 
 Each output file is named after the folder the `paths.json` came from.
-Example: a paths.json inside a folder called "Sith Lord" becomes
-"`Sith Lord.json`".
 
-`paths.json` commonly sits inside a folder literally called "assets" - if
-so, that "assets" folder is skipped and the folder ABOVE it is used for
-the name instead. Example:
-    `.../Sith Lord/Sith Lord Armor/assets/paths.json`  ->  "Sith Lord Armor.json"
+**Example**
 
-If two different paths.json files would end up with the SAME output
-name, the tool automatically climbs one folder higher for BOTH of them
-to tell them apart, repeating as many times as needed, e.g.:
-    `.../Republic/Officer/assets/paths.json` -> "`Republic Officer.json`"
-    `.../Empire/Officer/assets/paths.json`   -> "`Empire Officer.json`"
+A `paths.json` inside a folder called `Sith Lord` becomes:
 
-The output filename (without "`.json`") is also used to fill in that
-file's meta.charName, since TORC files don't carry a character name of
-their own. A note is added to meta.errors explaining that the name was
-assumed from the folder structure, so it's easy to spot and correct by
-hand if it's ever wrong.
+```text
+Sith Lord.json
+```
 
-Every converted file's meta block includes a note that it was a
-"TORC Conversion", plus any other warnings about things the converter
-had to guess or fill in (like a missing eye material path, or a body
-type it couldn't detect).
+`paths.json` commonly sits inside a folder literally called `assets`. If so, that `assets` folder is skipped and the folder **above it** is used for the filename instead.
 
+Example:
 
-ONE-TIME SETUP
----------------
-1. Install Python 3, if you don't already have it:
+```text
+.../Sith Lord/Sith Lord Armor/assets/paths.json
+↓
+Sith Lord Armor.json
+```
+
+If two different `paths.json` files would end up with the **same output filename**, the tool automatically climbs one folder higher for **both** until they're unique.
+
+Example:
+
+```text
+.../Republic/Officer/assets/paths.json
+↓
+Republic Officer.json
+
+.../Empire/Officer/assets/paths.json
+↓
+Empire Officer.json
+```
+
+The output filename (without `.json`) is also used to populate `meta.charName`, since TORC files don't contain a character name.
+
+A note is added to `meta.errors` explaining that the name was assumed from the folder structure, making it easy to find and correct later if needed.
+
+Every converted file's `meta` block also includes:
+
+- `"TORC Conversion"`
+- Any warnings generated during conversion (for example, a missing eye material path or an undetectable body type).
+
+---
+
+# One-Time Setup
+
+1. Install Python 3 if you don't already have it:
+
    https://www.python.org/downloads/
-   - Windows: during install, tick the box "Add Python to PATH".
-   - Mac: the installer from python.org includes everything needed
-     (the built-in "Tk" toolkit this program's window uses).
 
-That's it - no other downloads or installs needed.
+### Windows
 
+- During installation, tick **"Add Python to PATH"**.
 
-HOW TO RUN
-----------
-- Double-click "TORC_to_Jedipedia_Converter.py".
-  (On Windows this usually opens it directly. If it opens in a text
-  editor instead, right-click the file -> "Open with" -> Python.)
+### macOS
 
-  OR, from a terminal/command prompt, in this folder run:
-      python TORC_to_Jedipedia_Converter.py
+- The installer from python.org includes everything needed (including the built-in Tk toolkit used for the program window).
 
+No additional downloads or packages are required.
 
-HOW TO USE
-----------
-1. Click "Choose Source Folder..." and select the top-level folder that
-   contains your paths.json files anywhere inside it (subfolders are
-   searched automatically).
-2. Click "Choose Export Folder..." and select where you want the
-   converted Jedipedia .json files saved.
-3. (Optional) Tick "Preserve source folder structure in export" if you
-   want the export folder to mirror your original folder tree, rather
-   than dumping every converted file flat into one folder. See below
-   for exactly how this works.
-4. Click "Convert All".
-5. Watch the log at the bottom for progress. Any file with a warning
-   will show a line starting with "⚠" - that same note is also saved
-   inside that file's own meta.errors list, so it's never lost.
-6. When it's done, click "Open Export Folder" to see your results.
+---
 
+# How To Run
 
-EXPORT MODES
-------------
-Flat (default, checkbox unticked):
-  Every converted file is saved directly into the export folder, named
-  after its source folder (with automatic disambiguation - see below).
+Either:
 
-Preserve folder structure (checkbox ticked):
-  The export folder mirrors your source folder tree. Each paths.json's
-  "assets" folder (and the generic "paths.json" filename) is replaced
-  with a single file named after the folder it lived in, and that file
-  is placed in the PARENT of that folder - so if a character has
-  several variant folders (Body, Uniform, Uniform 2, etc.), they all
-  end up grouped together as sibling files in one shared folder.
-  Example:
-      Source:
-        `.../Imperial Army/Captain Smith/Captain Smith Body/assets/paths.json`
-        `.../Imperial Army/Captain Smith/Captain Smith Uniform/assets/paths.json`
-      Export:
-        `.../Imperial Army/Captain Smith/Captain Smith Body.json`
-        `.../Imperial Army/Captain Smith/Captain Smith Uniform.json`
-  A character with only one variant folder works the same way, so it
-  doesn't end up with a redundant folder wrapping a single file:
-      Source: `.../Imperial Army/Major Green Armored/assets/paths.json`
-      Export: `.../Imperial Army/Major Green Armored.json`
-  Because each file keeps its own place in the tree, name clashes
-  between similarly-named folders (e.g. two different "Officer"
-  folders under different parents) simply don't happen in this mode -
-  each ends up in its own correct subfolder.
+- Double-click `TORC_to_Jedipedia_Converter.py`
 
+  > On Windows this will usually launch Python automatically.
+  >
+  > If it opens in a text editor instead:
+  >
+  > **Right-click → Open With → Python**
 
-FILES IN THIS FOLDER
----------------------
-- TORC_to_Jedipedia_Converter.py   <- run this one
-- converter.py                     <- the conversion logic (needed alongside
-                                       the file above; don't delete it)
-- README.txt                       <- this file
+Or run it from a terminal in the project folder:
 
+```bash
+python TORC_to_Jedipedia_Converter.py
+```
 
-WHAT GETS CONVERTED, EXACTLY
-------------------------------
-- A "meta" block is added at the top of every output file:
-    charType   -> always set to "unknown"
-    charName   -> left blank
-    nppPath    -> left blank (fill in by hand if needed)
-    bodyType   -> auto-detected from model filenames when possible
-                  (e.g. "bfn", "bmn"); left blank if it can't be
-                  determined confidently
-    errors     -> "TORC Conversion" plus any warnings from this run
-- All numbers (color palettes, specular values, etc.) are converted to
-  text strings, exactly as written in the source file.
-- The order of fields inside each "otherValues" block is rearranged to
-  match the Jedipedia format.
-- Any "hair" slot missing a directionMap gets the standard default
-  ("/art/defaultassets/black.dds") added automatically.
-- Any eye material info missing a matPath gets the standard default
-  ("/art/shaders/materials/eye_human_non_a01_c01.mat") added
-  automatically, and a note is left in the file's errors list.
+---
+
+# How To Use
+
+1. Click **Choose Source Folder...**
+   - Select the top-level folder containing your `paths.json` files.
+   - Every subfolder is searched automatically.
+
+2. Click **Choose Export Folder...**
+   - Choose where the converted Jedipedia files will be written.
+
+3. *(Optional)* Enable **Preserve source folder structure in export** if you want the export folder to mirror the original folder tree instead of placing every file into one folder.
+
+4. Click **Convert All**.
+
+5. Watch the log window for progress.
+
+   Any file with a warning will display a line beginning with:
+
+   ```text
+   ⚠
+   ```
+
+   The same warning is also saved into that file's `meta.errors` list.
+
+6. When conversion finishes, click **Open Export Folder**.
+
+---
+
+# Export Modes
+
+## Flat Export (Default)
+
+Every converted file is written directly into the export folder.
+
+Filenames are automatically disambiguated if duplicates would occur.
+
+---
+
+## Preserve Folder Structure
+
+The export folder mirrors your original source tree.
+
+Each `assets/paths.json` is replaced with a single `.json` file named after the folder it lived in.
+
+That file is placed in the **parent** folder.
+
+### Example
+
+**Source**
+
+```text
+Imperial Army/
+└── Captain Smith/
+    ├── Captain Smith Body/
+    │   └── assets/
+    │       └── paths.json
+    └── Captain Smith Uniform/
+        └── assets/
+            └── paths.json
+```
+
+**Export**
+
+```text
+Imperial Army/
+└── Captain Smith/
+    ├── Captain Smith Body.json
+    └── Captain Smith Uniform.json
+```
+
+Characters with only one variant work the same way.
+
+### Source
+
+```text
+Imperial Army/
+└── Major Green Armored/
+    └── assets/
+        └── paths.json
+```
+
+### Export
+
+```text
+Imperial Army/
+└── Major Green Armored.json
+```
+
+This avoids unnecessary folders containing only a single file.
+
+Since every file stays within its original folder hierarchy, duplicate names (such as multiple `Officer` folders) never conflict.
+
+---
+
+# Files Included
+
+| File | Description |
+|------|-------------|
+| `TORC_to_Jedipedia_Converter.py` | Run this file. |
+| `converter.py` | Contains the conversion logic. Keep this file alongside the main program. |
+| `README.md` | This documentation. |
+
+---
+
+# What Gets Converted?
+
+Every output file receives a new `meta` block.
+
+| Field | Value |
+|-------|-------|
+| `charType` | Always `"unknown"` |
+| `charName` | Taken from the output filename |
+| `nppPath` | Left blank |
+| `bodyType` | Automatically detected from model filenames where possible (e.g. `bfn`, `bmn`) |
+| `errors` | Contains `"TORC Conversion"` plus any warnings generated during conversion |
+
+Additional conversion rules:
+
+- Numeric values (colour palettes, specular values, etc.) are converted into text strings exactly as written.
+- Fields inside each `otherValues` block are reordered to match the Jedipedia format.
+- Hair slots missing a `directionMap` automatically receive:
+
+```text
+/art/defaultassets/black.dds
+```
+
+- Eye materials missing a `matPath` automatically receive:
+
+```text
+/art/shaders/materials/eye_human_non_a01_c01.mat
+```
+
+Whenever the converter has to insert a default value or make an assumption, an explanatory note is added to `meta.errors`.
