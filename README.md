@@ -8,20 +8,14 @@ Each output file is named after the folder the `paths.json` came from.
 
 **Example**
 
-A `paths.json` inside a folder called `Sith Lord` becomes:
-
-```text
-Sith Lord.json
-```
+A `paths.json` inside a folder called `Sith Lord` becomes: `Sith Lord.json`
 
 `paths.json` commonly sits inside a folder literally called `assets`. If so, that `assets` folder is skipped and the folder **above it** is used for the filename instead.
 
 Example:
 
 ```text
-.../Sith Lord/Sith Lord Armor/assets/paths.json
-↓
-Sith Lord Armor.json
+.../Sith Lord/Sith Lord Armor/assets/paths.json → Sith Lord Armor.json
 ```
 
 If two different `paths.json` files would end up with the **same output filename**, the tool automatically climbs one folder higher for **both** until they're unique.
@@ -29,18 +23,13 @@ If two different `paths.json` files would end up with the **same output filename
 Example:
 
 ```text
-.../Republic/Officer/assets/paths.json
-↓
-Republic Officer.json
-
-.../Empire/Officer/assets/paths.json
-↓
-Empire Officer.json
+.../Republic/Officer/assets/paths.json  → Republic Officer.json
+.../Empire/Officer/assets/paths.json → Empire Officer.json
 ```
 
 The output filename (without `.json`) is also used to populate `meta.charName`, since TORC files don't contain a character name.
 
-A note is added to `meta.errors` explaining that the name was assumed from the folder structure, making it easy to find and correct later if needed.
+A note is added to `meta.logging` explaining that the name was assumed from the folder structure, making it easy to find and correct later if needed.
 
 Every converted file's `meta` block also includes:
 
@@ -102,13 +91,9 @@ python TORC_to_Jedipedia_Converter.py
 
 5. Watch the log window for progress.
 
-   Any file with a warning will display a line beginning with:
+   Any file with a warning will display a line beginning with: `⚠`
 
-   ```text
-   ⚠
-   ```
-
-   The same warning is also saved into that file's `meta.errors` list.
+   The same warning is also saved into that file's `meta.logging` list.
 
 6. When conversion finishes, click **Open Export Folder**.
 
@@ -218,4 +203,4 @@ Additional conversion rules:
 /art/shaders/materials/eye_human_non_a01_c01.mat
 ```
 
-Whenever the converter has to insert a default value or make an assumption, an explanatory note is added to `meta.errors`.
+Whenever the converter has to insert a default value or make an assumption, an explanatory note is added to `meta.logging`.
