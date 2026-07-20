@@ -200,7 +200,7 @@ Every output file receives a new `meta` block.
 | `charName` | Taken from the output filename |
 | `nppPath` | Left blank |
 | `bodyType` | Automatically detected from model filenames where possible (e.g. `bfn`, `bmn`) |
-| `errors` | Contains `"TORC Conversion"` plus any warnings generated during conversion |
+| `logging` | Contains `"TORC Conversion"` plus any warnings generated during conversion |
 
 Additional conversion rules:
 
