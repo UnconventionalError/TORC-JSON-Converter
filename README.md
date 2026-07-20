@@ -4,25 +4,25 @@
 WHAT THIS DOES
 --------------
 Searches a folder (and every subfolder inside it) for files named
-"paths.json" in the old TORC format, converts each one to the newer
+"`paths.json`" in the old TORC format, converts each one to the newer
 Jedipedia format, and saves the results into one export folder.
 
-Each output file is named after the folder the paths.json came from.
+Each output file is named after the folder the `paths.json` came from.
 Example: a paths.json inside a folder called "Sith Lord" becomes
-"Sith Lord.json".
+"`Sith Lord.json`".
 
-paths.json commonly sits inside a folder literally called "assets" - if
+`paths.json` commonly sits inside a folder literally called "assets" - if
 so, that "assets" folder is skipped and the folder ABOVE it is used for
 the name instead. Example:
-    .../Sith Lord/Sith Lord Armor/assets/paths.json  ->  "Sith Lord Armor.json"
+    `.../Sith Lord/Sith Lord Armor/assets/paths.json`  ->  "Sith Lord Armor.json"
 
 If two different paths.json files would end up with the SAME output
 name, the tool automatically climbs one folder higher for BOTH of them
 to tell them apart, repeating as many times as needed, e.g.:
-    .../Republic/Officer/assets/paths.json -> "Republic Officer.json"
-    .../Empire/Officer/assets/paths.json   -> "Empire Officer.json"
+    `.../Republic/Officer/assets/paths.json` -> "`Republic Officer.json`"
+    `.../Empire/Officer/assets/paths.json`   -> "`Empire Officer.json`"
 
-The output filename (without ".json") is also used to fill in that
+The output filename (without "`.json`") is also used to fill in that
 file's meta.charName, since TORC files don't carry a character name of
 their own. A note is added to meta.errors explaining that the name was
 assumed from the folder structure, so it's easy to spot and correct by
@@ -88,15 +88,15 @@ Preserve folder structure (checkbox ticked):
   end up grouped together as sibling files in one shared folder.
   Example:
       Source:
-        .../Imperial Army/Captain Smith/Captain Smith Body/assets/paths.json
-        .../Imperial Army/Captain Smith/Captain Smith Uniform/assets/paths.json
+        `.../Imperial Army/Captain Smith/Captain Smith Body/assets/paths.json`
+        `.../Imperial Army/Captain Smith/Captain Smith Uniform/assets/paths.json`
       Export:
-        .../Imperial Army/Captain Smith/Captain Smith Body.json
-        .../Imperial Army/Captain Smith/Captain Smith Uniform.json
+        `.../Imperial Army/Captain Smith/Captain Smith Body.json`
+        `.../Imperial Army/Captain Smith/Captain Smith Uniform.json`
   A character with only one variant folder works the same way, so it
   doesn't end up with a redundant folder wrapping a single file:
-      Source: .../Imperial Army/Major Green Armored/assets/paths.json
-      Export: .../Imperial Army/Major Green Armored.json
+      Source: `.../Imperial Army/Major Green Armored/assets/paths.json`
+      Export: `.../Imperial Army/Major Green Armored.json`
   Because each file keeps its own place in the tree, name clashes
   between similarly-named folders (e.g. two different "Officer"
   folders under different parents) simply don't happen in this mode -
